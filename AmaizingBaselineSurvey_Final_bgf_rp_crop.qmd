@@ -1,0 +1,815 @@
+---
+title: "Amaizing  Baseline Survey_Final-bgf-rp_crop"
+author: "Njambi"
+format: html
+editor: visual
+---
+
+## 
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+## Clear the environment
+
+```{r}
+
+rm(list = ls())
+
+```
+
+## Loading necessary libraries
+
+```{r, include=FALSE}
+
+library(tidyverse) # includes the dplyr, ggplot2, tidyr, readr, stringr, forcats, tibble packages
+library(readxl)
+library(Hmisc)
+library(labelled)
+library(magrittr)
+library(datawizard)
+library(gtsummary)
+library(gt)
+library(kableExtra)
+library(flextable)
+library(splitstackshape)
+library(lubridate)
+library(foreign)
+library(haven)
+
+#library(ggplot2)
+#library(tidyr)
+#library(tibble)
+#library(dplyr)
+#library(stringr)
+
+```
+
+## Set the working directory
+
+```{r}
+# Set working directory (Not necessary since the current wd is the correct wd)
+
+setwd("C:\\Users\\awanjau\\OneDrive - CGIAR\\Alliance\\Alliance_2024\\AMAZING\\AmazingBaselineDataCleaning\\Amaizing  Baseline Survey_Final-bgf-rp_crop")
+      
+```
+
+## Loading data
+
+```{r}
+# Read a csv file
+
+amaizing_crop_path <- "C:\\Users\\awanjau\\OneDrive - CGIAR\\Alliance\\Alliance_2024\\AMAZING\\aMaizingBaseline_Files\\Amaizing  Baseline Survey_Final-bgf-rp_crop.csv"
+
+amaizing_crop <- read_csv(amaizing_crop_path)
+
+dim(amaizing_crop) # 4046   67
+
+```
+
+```{r}
+
+names(amaizing_crop)
+```
+
+```{r}
+unique(amaizing_crop$cindex2)
+```
+
+```{r}
+unique(amaizing_crop$cname)
+```
+
+```{r}
+# Convert crop to factor
+
+amaizing_crop <- amaizing_crop %>%
+  mutate(cname = factor(cname))
+
+unique(amaizing_crop$cname)
+
+```
+
+```{r}
+# Multi-select
+
+unique(amaizing_crop$m_plot)
+```
+
+```{r}
+
+unique(amaizing_crop$m_plot_1)
+```
+
+```{r}
+
+unique(amaizing_crop$m_plot_2)
+```
+
+```{r}
+unique(amaizing_crop$m_plot_3)
+```
+
+```{r}
+
+
+unique(amaizing_crop$m_plot_4)
+```
+
+```{r}
+
+
+unique(amaizing_crop$m_plot_5)
+```
+
+```{r}
+# Drop this column
+
+unique(amaizing_crop$m_plot_6)
+```
+
+```{r}
+# Drop this column
+
+unique(amaizing_crop$m_plot_7)
+```
+
+```{r}
+# Drop this column
+
+unique(amaizing_crop$m_plot_8)
+```
+
+```{r}
+# Drop this column
+
+unique(amaizing_crop$m_plot_9)
+```
+
+```{r}
+# Drop this column
+
+unique(amaizing_crop$m_plot_10)
+```
+
+```{r}
+# Drop this column
+
+unique(amaizing_crop$m_plot_11)
+```
+
+```{r}
+# Drop this column
+
+unique(amaizing_crop$m_plot_12)
+```
+
+```{r}
+# Drop this column
+
+unique(amaizing_crop$m_plot_13)
+```
+
+```{r}
+# Drop this column
+
+unique(amaizing_crop$m_plot_14)
+```
+
+```{r}
+# Drop this column
+
+unique(amaizing_crop$m_plot_15)
+```
+
+```{r}
+# Drop this column
+
+unique(amaizing_crop$m_plot_16)
+```
+
+```{r}
+# Drop this column
+
+unique(amaizing_crop$m_plot_17)
+```
+
+```{r}
+# Drop this column
+
+unique(amaizing_crop$m_plot_18)
+```
+
+```{r}
+# Drop this column
+
+unique(amaizing_crop$m_plot_19)
+```
+
+```{r}
+# Drop this column
+
+unique(amaizing_crop$m_plot_20)
+```
+
+```{r}
+# Drop this column
+
+unique(amaizing_crop$m_plot_21)
+```
+
+```{r}
+# Drop this column
+
+unique(amaizing_crop$m_plot_22)
+```
+
+```{r}
+# Drop this column
+
+unique(amaizing_crop$m_plot_23)
+```
+
+```{r}
+# Drop this column
+
+unique(amaizing_crop$m_plot_24)
+```
+
+```{r}
+# Drop this column
+
+unique(amaizing_crop$m_plot_25)
+```
+
+```{r}
+
+unique(amaizing_crop$rp_plotlevel_count)
+```
+
+```{r, include=FALSE}
+# id
+
+unique(amaizing_crop$`SET-OF-rp_plotlevel`)
+```
+
+```{r}
+
+
+unique(amaizing_crop$harvestsum)
+```
+
+```{r}
+
+
+unique(amaizing_crop$f23)
+```
+
+```{r}
+
+
+unique(amaizing_crop$f24)
+```
+
+unitharv 1 90 Kg bag unitharv 2 70Kg bag unitharv 3 50Kg bag unitharv 4 25Kg bag unitharv 5 10Kg bag unitharv 6 Gorogoro (2kgs unitharv 7 ***20Kg Tin*** unitharv 8 ***20Kg Tin*** unitharv 9 Wheelbarrow unitharv 10 A cart unitharv 11 Kilograms unitharv -222 Other, Specify
+
+The unit "20Kg Tin" has been repeated in the XLSX form. Combine 7 == 8, change 9 to 8, 10 to 9, and 11 to 10 before converting f24 into a factor.
+
+```{r}
+
+amaizing_crop <- amaizing_crop %>%
+  mutate(
+    
+    f24 = case_when(
+      f24 == 8 ~ 7,
+      f24 == 9 ~ 8,
+      f24 == 10 ~ 9,
+      f24 == 11 ~ 10,
+      
+      TRUE ~ f24
+     
+    ))
+
+unitharv_levels <- c("90 Kg bag",	"70Kg bag",	"50Kg bag",	"25Kg bag",	"10Kg bag",	"Gorogoro (2kgs)",	"20Kg Tin",	"Kilograms",	"Other, Specify")  # "Wheelbarrow", 	"A cart",
+
+amaizing_crop <- amaizing_crop %>%
+  mutate(
+    f24 = factor(
+      f24, 
+      levels = c(1:7, 10, -222), 
+      labels = unitharv_levels
+    )
+  
+  ) 
+
+
+```
+
+```{r}
+
+
+unique(amaizing_crop$f24)
+```
+
+```{r}
+
+unique(amaizing_crop$f24_sp)
+```
+
+```{r}
+amaizing_crop <- amaizing_crop %>%
+  mutate(
+    f24_sp = case_when(
+      f24_sp == "45kg bag" ~ "45Kg bag",
+      f24_sp %in% c("40 kg bag", "40kg bag") ~ "40Kg bag",
+      TRUE ~ f24_sp
+      
+    )
+           
+           )
+```
+
+```{r}
+# Drop f24_sp
+
+unique(amaizing_crop$f24_sp)
+```
+
+```{r}
+amaizing_crop <- amaizing_crop %>%
+  mutate(
+
+    f24 = as.character(f24),
+    f24 = str_replace_all(f24, "Other, Specify",
+                                              replacement = f24_sp),
+    f24 = factor(f24)
+  )
+```
+
+```{r}
+
+
+unique(amaizing_crop$f24)
+```
+
+```{r}
+
+
+unique(amaizing_crop$f25)
+```
+
+```{r}
+
+
+unique(amaizing_crop$f26)
+```
+
+1 Male 2 Jointly 0 Female
+
+```{r}
+
+manager_levels <- c("Female", "Jointly", "Male")
+
+amaizing_crop <- amaizing_crop %>%
+  mutate(
+    f26 = factor(
+      f26, 
+      levels = c(0,1,2), 
+      labels = manager_levels
+    )
+  
+  ) 
+
+```
+
+```{r}
+
+unique(amaizing_crop$f26)
+```
+
+```{r}
+unique(amaizing_crop$f27)
+```
+
+```{r}
+
+f27_levels <- c("Gunny bag", 	"Hermatic bags", 	"Leased warehouses",	"Leased cold storage",	"Sold directly at the farm gate", 	"Sisal Bag",	"Metallic Silos",	"Other, specify")
+
+amaizing_crop <- amaizing_crop %>%
+  mutate(
+    f27 = factor(
+      f27, 
+      levels = c(1:7, -222), 
+      labels = f27_levels
+    )
+  
+  ) 
+
+```
+
+```{r}
+unique(amaizing_crop$f27)
+```
+
+```{r}
+# Text, not cleaned
+
+unique(amaizing_crop$f27_sp)
+```
+
+```{r}
+unique(amaizing_crop$f28)
+```
+
+```{r}
+
+f28_levels <- c("For food",	"Anticipate better prices",	"For Seeds",	"Lack of market",	"Other, specify")
+
+amaizing_crop <- amaizing_crop %>%
+  mutate(
+    f28 = factor(
+      f28, 
+      levels = c(1:4, -222), 
+      labels = f28_levels
+    )
+  
+  ) 
+
+```
+
+```{r}
+unique(amaizing_crop$f28)
+```
+
+```{r}
+# Text, not cleaned
+
+unique(amaizing_crop$f28_sp)
+```
+
+```{r}
+
+unique(amaizing_crop$f29)
+```
+
+```{r}
+
+f29_levels <- c("No preservative",	"Chemical preservative",	"Use of ash",	"Other, specify")
+
+amaizing_crop <- amaizing_crop %>%
+  mutate(
+    f29 = factor(
+      f29, 
+      levels = c(1:3, -222), 
+      labels = f29_levels
+    )
+  
+  ) 
+
+```
+
+```{r}
+
+unique(amaizing_crop$f29)
+```
+
+```{r}
+# Text, not cleaned
+
+unique(amaizing_crop$f29_sp)
+```
+
+```{r}
+# Multi-selct
+
+unique(amaizing_crop$f30)
+```
+
+```{r}
+unique(amaizing_crop$f30_1)
+```
+
+```{r}
+unique(amaizing_crop$f30_2)
+```
+
+```{r}
+unique(amaizing_crop$f30_2)
+```
+
+```{r}
+unique(amaizing_crop$f30_3)
+```
+
+```{r}
+unique(amaizing_crop$f30_4)
+```
+
+```{r}
+unique(amaizing_crop$f30_5)
+```
+
+```{r}
+unique(amaizing_crop$m_plot_6)
+```
+
+```{r}
+unique(amaizing_crop$f30_7)
+```
+
+```{r}
+unique(amaizing_crop$f30_8)
+```
+
+```{r}
+unique(amaizing_crop$f30_9)
+```
+
+```{r}
+unique(amaizing_crop$f30_10)
+```
+
+```{r}
+unique(amaizing_crop$f30_11)
+```
+
+```{r}
+unique(amaizing_crop$f30_12)
+```
+
+```{r}
+unique(amaizing_crop$f30_13)
+```
+
+```{r}
+unique(amaizing_crop$f30_14)
+```
+
+```{r}
+unique(amaizing_crop$f30_15)
+```
+
+```{r}
+unique(amaizing_crop$f30__222)
+```
+
+```{r}
+unique(amaizing_crop$f30__666)
+```
+
+```{r}
+
+# Text, not cleaned
+
+unique(amaizing_crop$f30_sp)
+```
+
+```{r}
+unique(amaizing_crop$rp_risk_count)
+```
+
+```{r}
+# Drop columns
+
+names(amaizing_crop)
+
+amaizing_crop <- amaizing_crop %>%
+  dplyr::select(-c(10:29, 35))
+
+```
+
+```{r, include=FALSE}
+# Define column labels
+
+# column_labels <- c(
+#   cindex1 = "Crop repeat iteration/index",
+#   cindex2 = "Crop selection index from select multiple crop",
+#   cname = "Crop name",
+#   m_plot = "{cname} was grown in  which plot?",
+#   m_plot_1 = "Plot 1",
+#   m_plot_2 = "Plot 2",
+#   m_plot_3 = "Plot 3",
+#   m_plot_4 = "Plot 4",
+#   m_plot_5 = "Plot 5",
+#   m_plot_6 = "Plot 6",
+#   m_plot_7 = "Plot 7",
+#   m_plot_8 = "Plot 8",
+#   m_plot_9 = "Plot 9",
+#   m_plot_10 = "Plot 10",
+#   m_plot_11 = "Plot 11",
+#   m_plot_12 = "Plot 12",
+#   m_plot_13 = "Plot 13",
+#   m_plot_14 = "Plot 14",
+#   m_plot_15 = "Plot 15",
+#   m_plot_16 = "Plot 16",
+#   m_plot_17 = "Plot 17",
+#   m_plot_18 = "Plot 18",
+#   m_plot_19 = "Plot 19",
+#   m_plot_20 = "Plot 20",
+#   m_plot_21 = "Plot 21",
+#   m_plot_22 = "Plot 22",
+#   m_plot_23 = "Plot 23",
+#   m_plot_24 = "Plot 24",
+#   m_plot_25 = "Plot 25",
+#   rp_plotlevel_count = "Count of m_plot",
+#   `SET-OF-rp_plotlevel` = "Plot level repeat group ID",
+#   harvestsum = "Sum of quantity of ${cname} harvested in ${m_plotid}?",
+#   f23 = "Quantity of ${cname} sold",
+#   f24 = "Unit", 
+#   f24_sp = "Please specify the Unit", 
+#   f25 = "Price per Unit of  of ${cname} sold",
+#   f26	= "Who usually decides on what do to with the income from selling the Crop?",
+#   f27 = "How did you store your crops after the harvest during the last season",
+#   f27_sp = "Please specify how you stored",
+#   f28 = "Main Purpose for Storage?",
+#   f28_sp = "Please specify the main purpose",
+#   f29 = "Did you add anything to help preserve the crops in the storage?",
+#   f29_sp = "Please specify",
+#   f30 = "Was your ${cname} production in the last 5 years  affected by any of the following climatic risk and production risks?",
+#   f30_1	 = "Drought",
+#   f30_2	= "Excessive Rainfall",
+#   f30_3	= "Pests",
+#   f30_4	= "Diseases",
+#   f30_5 =	"Floods",
+#   f30_6	= "Animals",
+#   f30_7	= "Fire",
+#   f30_8	= "Bird",
+#   f30_9	= "Frost",
+#   f30_10 = "Hail", 
+#   f30_11 =	"Theft", 
+#   f30_12 =	"High input price",
+#   f30_13 =	"Input shortages",
+#   f30_14	= "Commodity price fluctuations",
+#   f30_15	= "Lack of market",
+#   f30__222 =	"Other, Specify",
+#   f30__666 =	"None of the above",
+#   f30_sp	= "Please specify other risk",
+#   rp_risk_count = "Total risks reported",
+#   `SET-OF-rp_risk` = "Risk repeat group ID",
+#   PARENT_KEY = "Parent key",
+#   KEY = "Key",
+#   `SET-OF-rp_crop` = "Crops repeat group ID",
+# 
+# )
+
+```
+
+```{r}
+column_labels <- c(
+  cindex1 = "Crop repeat iteration/index",
+  cindex2 = "Crop selection index from select multiple crop",
+  cname = "Crop name",
+  m_plot = "Crop was grown in which plot?",
+  m_plot_1 = "Plot 1",
+  m_plot_2 = "Plot 2",
+  m_plot_3 = "Plot 3",
+  m_plot_4 = "Plot 4",
+  m_plot_5 = "Plot 5",
+  # m_plot_6 = "Plot 6",
+  # m_plot_7 = "Plot 7",
+  # m_plot_8 = "Plot 8",
+  # m_plot_9 = "Plot 9",
+  # m_plot_10 = "Plot 10",
+  # m_plot_11 = "Plot 11",
+  # m_plot_12 = "Plot 12",
+  # m_plot_13 = "Plot 13",
+  # m_plot_14 = "Plot 14",
+  # m_plot_15 = "Plot 15",
+  # m_plot_16 = "Plot 16",
+  # m_plot_17 = "Plot 17",
+  # m_plot_18 = "Plot 18",
+  # m_plot_19 = "Plot 19",
+  # m_plot_20 = "Plot 20",
+  # m_plot_21 = "Plot 21",
+  # m_plot_22 = "Plot 22",
+  # m_plot_23 = "Plot 23",
+  # m_plot_24 = "Plot 24",
+  # m_plot_25 = "Plot 25",
+  rp_plotlevel_count = "Count of m_plot",
+  `SET-OF-rp_plotlevel` = "Plot level repeat group ID",
+  harvestsum = "Sum of quantity harvested in plot?",
+  f23 = "Quantity of crop sold",
+  f24 = "Unit",
+  #f24_sp = "Please specify the Unit",
+  f25 = "Price per Unit of crop sold",
+  f26 = "Who decides on the income from selling the Crop?",
+  f27 = "Storage method post-harvest",
+  f27_sp = "Specify storage method",
+  f28 = "Main Purpose for Storage",
+  f28_sp = "Specify main purpose for storage",
+  f29 = "Additives for preservation",
+  f29_sp = "Specify additives",
+  f30 = "Production affected by climatic and production risks?",
+  f30_1 = "Drought",
+  f30_2 = "Excessive Rainfall",
+  f30_3 = "Pests",
+  f30_4 = "Diseases",
+  f30_5 = "Floods",
+  f30_6 = "Animals",
+  f30_7 = "Fire",
+  f30_8 = "Bird",
+  f30_9 = "Frost",
+  f30_10 = "Hail",
+  f30_11 = "Theft",
+  f30_12 = "High input price",
+  f30_13 = "Input shortages",
+  f30_14 = "Commodity price fluctuations",
+  f30_15 = "Lack of market",
+  f30__222 = "Other, Specify",
+  f30__666 = "None of the above",
+  f30_sp = "Specify other risk",
+  rp_risk_count = "Total risks reported",
+  `SET-OF-rp_risk` = "Risk repeat group ID",
+  PARENT_KEY = "Parent key",
+  KEY = "Key",
+  `SET-OF-rp_crop` = "Crops repeat group ID"
+)
+
+
+
+
+```
+
+```{r}
+
+# Rename columns with characters not supported by stata
+
+amaizing_crop <- amaizing_crop %>%
+  
+  rename(SET_OF_rp_plotlevel = `SET-OF-rp_plotlevel`,
+         SET_OF_rp_risk = `SET-OF-rp_risk`,
+         SET_OF_rp_crop = `SET-OF-rp_crop`
+         )
+
+```
+
+```{r}
+# Set variable/column labels
+ 
+amaizing_crop <- amaizing_crop %>%
+  
+  set_variable_labels(.labels = column_labels)   # Requires package labelled
+```
+
+Using the function View() to open the new data in a spreadsheet reveals the column names and labels.
+
+```{r}
+
+# View(amaizing_crop)
+
+```
+
+## Generate a data dictionary
+
+```{r}
+# Data dictionary
+
+amaizing_crop_dict <- look_for(amaizing_crop, labels = TRUE, values = TRUE) %>%
+  dplyr::select(-c(missing, value_labels))
+
+  gt(amaizing_crop_dict)
+
+```
+
+## Export data dictionary to CSV
+
+```{r}
+
+readr::write_csv(amaizing_crop_dict, "amaizing_crop_dict.csv")
+
+```
+
+## Export data to CSV
+
+```{r}
+
+readr::write_csv(amaizing_crop, "amaizing_crop.csv")
+
+```
+
+## Save as R data
+
+```{r}
+
+save(amaizing_crop, file = "amaizing_crop.RData")
+
+View(amaizing_crop)
+```
+
+## Export data to SPSS
+
+```{r}
+
+write.foreign(amaizing_crop, "amaizing_crop.sav", "amaizing_crop", package = "SPSS")
+
+```
+
+## Export data to STATA
+
+```{r}
+
+write_dta(amaizing_crop, "amaizing_crop.dta")
+
+```
